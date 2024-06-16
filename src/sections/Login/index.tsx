@@ -48,7 +48,7 @@ export default function LoginSection() {
 
   // TODO: Remove this on production
   const defaultValues = {
-    email: 'vladimirprelic22@gmail.com',
+    email: 'vitovodenko@gmail.com',
     password: '123456789',
   };
 
