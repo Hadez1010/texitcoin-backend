@@ -4,9 +4,6 @@ import { ObjectType, Field, ID } from 'type-graphql';
 export class BaseEntity {
   @Field({ nullable: true })
   createdAt?: Date;
-  get created_date() {
-    return this.createdAt.toLocaleDateString('en-CA');
-  }
   @Field({ nullable: true })
   updatedAt?: Date;
 

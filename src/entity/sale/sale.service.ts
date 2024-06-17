@@ -9,7 +9,7 @@ export class SaleService {
   constructor(
     @Inject(() => PrismaService)
     private readonly prisma: PrismaService
-  ) {}
+  ) { }
 
   async getSales(params: SaleQueryArgs) {
     const allItems = await this.prisma.sale.findMany({

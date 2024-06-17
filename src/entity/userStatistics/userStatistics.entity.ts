@@ -8,6 +8,8 @@ export class UserStatistics extends BaseEntity {
   @Field(() => ID)
   id: string;
 
+  @Field(() => ID)
+  userId: string;
   @Field()
   blocks: number;
 

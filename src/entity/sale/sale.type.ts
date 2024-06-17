@@ -25,6 +25,9 @@ export class CreateSaleInput {
   @Field(() => ID)
   userId: string;
 
+  @Field(() => ID)
+  statisticsId: string;
+
   @Field()
   invoiceNo: number;
 
