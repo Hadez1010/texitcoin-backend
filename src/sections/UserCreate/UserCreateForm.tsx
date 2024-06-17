@@ -25,14 +25,17 @@ import FormProvider, { RHFSwitch, RHFTextField, RHFSelectAvatar } from 'src/comp
 const CREATE_USER = gql(/* GraphQL */ `
   mutation CreateUser($data: CreateUserInput!) {
     createUser(data: $data) {
-      id
-      name
+      username
+      fullname
+      sponsorName
+      introducerFullName
       email
-      avatarUrl
-      isSuperAdmin
-      isApUser
-      isBackOfficeUser
-      isEmailVerified
+      mobile
+      assetId
+      commissionPayout
+      txcPayout
+      txcCold
+      isAdmin
       createdAt
     }
   }
@@ -41,13 +44,18 @@ const CREATE_USER = gql(/* GraphQL */ `
 // ----------------------------------------------------------------------
 
 const NewUserSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
+  username: Yup.string().required('Username is required'),
+  fullname: Yup.string().required('Fullname is required'),
+  sponsorName: Yup.string().required('SponsorName is required'),
+  introducerFullName: Yup.string().required('IntroducerFullName is required'),
   email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-  avatarUrl: Yup.string().required('Avatar is required'),
-  isSuperAdmin: Yup.boolean().nullable(),
-  isApUser: Yup.boolean().nullable(),
-  isBackOfficeUser: Yup.boolean().nullable(),
-  isEmailVerified: Yup.boolean().nullable(),
+  password: Yup.string().required('Password is required'),
+  mobile: Yup.string().required('Mobile number is required'),
+  assetId: Yup.string().required('AssetId is required'),
+  commissionPayout: Yup.string().required('CommissionPayout is required'),
+  txcPayout: Yup.string().required('TxcPayout is required'),
+  txcCold: Yup.string().required('TxcCold is requried'),
+  isAdmin: Yup.boolean().required(),
 });
 
 export default function UserCreateForm() {
@@ -57,13 +65,18 @@ export default function UserCreateForm() {
 
   const defaultValues = useMemo(
     () => ({
-      name: '',
+      username: '',
+      fullname: '',
+      sponsorName: '',
+      introducerFullName: '',
       email: '',
-      avatarUrl: '',
-      isSuperAdmin: false,
-      isApUser: false,
-      isBackOfficeUser: false,
-      isEmailVerified: false,
+      password: '',
+      mobile: '',
+      assetId: '',
+      commissionPayout: '',
+      txcPayout: '',
+      txcCold: '',
+      isAdmin: false,
     }),
     []
   );

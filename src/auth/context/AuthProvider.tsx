@@ -11,7 +11,7 @@ const FETCH_ME_QUERY = gql(/* GraphQL */ `
   query FetchMe {
     me {
       id
-      name
+      username
       email
     }
   }

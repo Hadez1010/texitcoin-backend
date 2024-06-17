@@ -87,11 +87,18 @@ const FETCH_USERS_QUERY = gql(/* GraphQL */ `
     users(page: $page, filter: $filter, sort: $sort) {
       users {
         id
-        name
+        username
+        fullname
+        sponsorName
+        introducerFullName
         email
-        avatarUrl
-        isSuperAdmin
-        isApUser
+        password
+        mobile
+        assetId
+        commissionPayout
+        txcPayout
+        txcCold
+        isAdmin
         createdAt
         updatedAt
         deletedAt

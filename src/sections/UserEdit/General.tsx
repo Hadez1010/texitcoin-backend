@@ -29,13 +29,17 @@ const UPDATE_USER = gql(/* GraphQL */ `
   mutation UpdateUser($data: UpdateUserInput!) {
     updateUser(data: $data) {
       id
-      name
+      username
+      fullname
+      sponsorName
+      introducerFullName
       email
-      avatarUrl
-      isApUser
-      isBackOfficeUser
-      isEmailVerified
-      isSuperAdmin
+      mobile
+      assetId
+      commissionPayout
+      txcPayout
+      txcCold
+      isAdmin
     }
   }
 `);
@@ -43,13 +47,12 @@ const UPDATE_USER = gql(/* GraphQL */ `
 // ----------------------------------------------------------------------
 
 const userSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
+  username: Yup.string().required('username is required'),
+  fullname: Yup.string().required('fullname is required'),
+  sponsorName: Yup.string().required('sponsorName is required'),
+  introducerFullName: Yup.string().required('introducerFullName is required'),
   email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-  avatarUrl: Yup.string().nullable(),
-  isSuperAdmin: Yup.boolean().nullable(),
-  isApUser: Yup.boolean().nullable(),
-  isBackOfficeUser: Yup.boolean().nullable(),
-  isEmailVerified: Yup.boolean().nullable(),
+  isAdmin: Yup.boolean().nullable(),
 });
 
 export default function UserGeneral({ currentUser }: Props) {

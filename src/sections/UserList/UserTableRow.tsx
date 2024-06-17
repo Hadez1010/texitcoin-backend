@@ -1,4 +1,3 @@
-import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
@@ -16,7 +15,6 @@ import { User } from 'src/__generated__/graphql';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
-
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -33,8 +31,7 @@ export default function UserTableRow({
 }: Props) {
   const router = useRouter();
 
-  const { id, name, avatarUrl, email, isSuperAdmin, isApUser, createdAt, updatedAt, deletedAt } =
-    row;
+  const { id, username, email, isAdmin, createdAt, updatedAt, deletedAt } = row;
   return (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">
@@ -42,10 +39,10 @@ export default function UserTableRow({
       </TableCell>
 
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar alt={name} src={avatarUrl || undefined} sx={{ mr: 2 }} />
+        {/* <Avatar alt={username} src={avatarUrl || undefined} sx={{ mr: 2 }} /> */}
 
         <ListItemText
-          primary={name}
+          primary={username}
           secondary={email}
           primaryTypographyProps={{ typography: 'body2' }}
           secondaryTypographyProps={{
@@ -58,7 +55,7 @@ export default function UserTableRow({
       <TableCell sx={{ whiteSpace: 'nowrap' }}>ABC Charter School</TableCell>
 
       <TableCell sx={{ whiteSpace: 'nowrap' }}>
-        {isSuperAdmin && (
+        {isAdmin && (
           <Label variant="soft" color="secondary">
             Admin
           </Label>
@@ -66,7 +63,7 @@ export default function UserTableRow({
       </TableCell>
 
       <TableCell sx={{ whiteSpace: 'nowrap' }}>
-        {isApUser && (
+        {!isAdmin && (
           <Label variant="soft" color="info">
             AP user
           </Label>

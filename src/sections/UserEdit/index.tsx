@@ -12,14 +12,10 @@ import { useRouter } from 'src/routes/hooks';
 
 import { gql } from 'src/__generated__/gql';
 
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import BreadCrumbs from 'src/components/Breadcrumbs';
 import { useSettingsContext } from 'src/components/settings';
 import { LoadingScreen } from 'src/components/loading-screen';
-
-import UserGeneral from './General';
-import Organization from './Organization';
 
 // ----------------------------------------------------------------------
 
@@ -42,33 +38,32 @@ const FETCH_USER = gql(/* GraphQL */ `
     users(filter: $filter) {
       users {
         id
-        name
+        username
+        fullname
+        sponsorName
+        introducerFullName
         email
-        avatarUrl
-        isSuperAdmin
-        isApUser
-        isBackOfficeUser
-        isEmailVerified
-        userGroups {
-          id
-          name
-          createdAt
-          permissions {
-            Account
-            ApprovalAmount
-            BankAccount
-            BatchUpload
-            CreditCard
-            Customer
-            Report
-            Vendor
-          }
-          organization {
-            id
-            name
-            slug
-            email
-            avatarUrl
+        password
+        mobile
+        assetId
+        commissionPayout
+        txcPayout
+        txcCold
+        isAdmin
+        sales {
+          invoiceNo
+          amount
+          hashPower
+          productName
+          paymentMethod
+          issuedAt
+          statistics {
+            newBlocks
+            newHashPower
+            totalBlocks
+            totalHashPower
+            members
+            issuedAt
           }
         }
       }
@@ -114,12 +109,12 @@ export default function OrganizationEditView() {
   return (
     <>
       <Helmet>
-        <title>{`Limelite: ${user.name}`}</title>
+        <title>{`Limelite: ${user.username}`}</title>
       </Helmet>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <BreadCrumbs
-          heading={user.name}
-          links={[{ name: 'User', href: path.dashboard.user.root }, { name: user.name }]}
+          heading={user.username}
+          links={[{ name: 'User', href: path.dashboard.user.root }, { name: user.username }]}
           sx={{
             mb: { xs: 3, md: 5 },
           }}
@@ -135,30 +130,11 @@ export default function OrganizationEditView() {
           }}
         >
           {TABS.map((tab) => (
-            <Tab
-              key={tab.value}
-              label={
-                <>
-                  {tab.label}
-                  {tab.value === 'organizations' && (
-                    <Label
-                      variant={tabParam === 'organizations' ? 'filled' : 'soft'}
-                      color="success"
-                      sx={{ ml: 1 }}
-                    >
-                      {user.userGroups?.length}
-                    </Label>
-                  )}
-                </>
-              }
-              icon={tab.icon}
-              value={tab.value}
-            />
+            <Tab key={tab.value} label={<>{tab.label}</>} icon={tab.icon} value={tab.value} />
           ))}
         </Tabs>
 
-        {tabParam === 'general' && <UserGeneral currentUser={user} />}
-        {tabParam === 'organizations' && <Organization userGroups={user.userGroups ?? []} />}
+        {/* {tabParam === 'general' && <UserGeneral currentUser={user} />} */}
       </Container>
     </>
   );

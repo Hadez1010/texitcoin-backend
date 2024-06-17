@@ -1,18 +1,16 @@
 import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
+// import Tooltip from '@mui/material/Tooltip';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import IconButton from '@mui/material/IconButton';
+// import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import { path } from 'src/routes/path';
-import { useRouter } from 'src/routes/hooks';
+// import { path } from 'src/routes/path';
+// import { useRouter } from 'src/routes/hooks';
 
 import { fDate, fTime } from 'src/utils/format-time';
 
 import { UserGroup } from 'src/__generated__/graphql';
-
-import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +21,7 @@ type Props = {
 };
 
 export default function CustomTableRow({ row, selected, onSelectRow }: Props) {
-  const router = useRouter();
+  // const router = useRouter();
 
   const { name, permissions, organization, createdAt } = row;
   return (
@@ -70,7 +68,7 @@ export default function CustomTableRow({ row, selected, onSelectRow }: Props) {
         />
       </TableCell>
 
-      <TableCell align="left" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+      {/* <TableCell align="left" sx={{ px: 1, whiteSpace: 'nowrap' }}>
         <Tooltip title="View" placement="top" arrow>
           <IconButton
             color="default"
@@ -81,7 +79,7 @@ export default function CustomTableRow({ row, selected, onSelectRow }: Props) {
             <Iconify icon="solar:eye-bold" />
           </IconButton>
         </Tooltip>
-      </TableCell>
+      </TableCell> */}
     </TableRow>
   );
 }

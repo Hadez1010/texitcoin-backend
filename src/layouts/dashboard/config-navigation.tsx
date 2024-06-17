@@ -53,7 +53,7 @@ export function useNavData() {
         subheader: 'Limelite Administration',
         items: [
           { title: 'User', path: path.dashboard.user.root, icon: ICONS.user },
-          { title: 'Organization', path: path.dashboard.org.root, icon: ICONS.school },
+          // { title: 'Organization', path: path.dashboard.org.root, icon: ICONS.school },
         ],
       },
     ],
