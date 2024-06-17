@@ -3,6 +3,7 @@
 const ROOTS = {
   LOGIN: '/login',
   DASHBOARD: '/dashboard',
+  STATISTICS: '/statistics',
 };
 
 // ----------------------------------------------------------------------
@@ -19,12 +20,11 @@ export const path = {
       edit: (id: string) => `${ROOTS.DASHBOARD}/users/${id}`,
       new: `${ROOTS.DASHBOARD}/users/new`,
     },
-    // org: {
-    //   root: `${ROOTS.DASHBOARD}/organizations`,
-    //   edit: (id: string) => `${ROOTS.DASHBOARD}/organizations/${id}`,
-    //   editUserGroup: (id: string) => `${ROOTS.DASHBOARD}/organizations/${id}/user-group`,
-    //   new: `${ROOTS.DASHBOARD}/organizations/new`,
-    // },
+  },
+
+  // STATISTICS
+  statistics: {
+    root: ROOTS.STATISTICS,
   },
 
   notFound: '/404',

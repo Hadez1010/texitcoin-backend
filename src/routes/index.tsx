@@ -5,6 +5,7 @@ import { PATH_AFTER_LOGIN } from 'src/config';
 import { mainRoutes } from './sections/main';
 import { authRoutes } from './sections/auth';
 import { dashboardRoutes } from './sections/dashboard';
+import { statisticsRoutes } from './sections/statistics';
 
 // ----------------------------------------------------------------------
 
@@ -14,6 +15,9 @@ export default function Router() {
       path: '/',
       element: <Navigate to={PATH_AFTER_LOGIN} replace />,
     },
+
+    // First Page
+    ...statisticsRoutes,
 
     // Auth routes
     ...authRoutes,
