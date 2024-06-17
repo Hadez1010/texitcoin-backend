@@ -50,7 +50,7 @@ export function useNavData() {
       // OVERVIEW
       // ----------------------------------------------------------------------
       {
-        subheader: 'Limelite Administration',
+        subheader: 'Texitcoin Administration',
         items: [
           { title: 'User', path: path.dashboard.user.root, icon: ICONS.user },
           // { title: 'Organization', path: path.dashboard.org.root, icon: ICONS.school },

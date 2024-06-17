@@ -8,7 +8,7 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Limelite Users</title>
+        <title>Texitcoin Users</title>
       </Helmet>
 
       <UserList />

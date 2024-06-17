@@ -8,7 +8,7 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Limelite: New User</title>
+        <title>Texitcoin: New User</title>
       </Helmet>
 
       <UserCreate />

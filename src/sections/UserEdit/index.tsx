@@ -109,7 +109,7 @@ export default function OrganizationEditView() {
   return (
     <>
       <Helmet>
-        <title>{`Limelite: ${user.username}`}</title>
+        <title>{`Texitcoin: ${user.username}`}</title>
       </Helmet>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <BreadCrumbs

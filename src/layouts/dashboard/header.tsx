@@ -13,7 +13,6 @@ import Logo from 'src/components/logo';
 import SvgColor from 'src/components/SvgColor';
 import { useSettingsContext } from 'src/components/settings';
 
-import Searchbar from '../common/searchbar';
 import { NAV, HEADER } from '../config-layout';
 import SettingsButton from '../common/settings-button';
 import AccountPopover from '../common/account-popover';
@@ -49,8 +48,6 @@ export default function Header({ onOpenNav }: Props) {
           <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
         </IconButton>
       )}
-
-      <Searchbar />
 
       <Stack
         flexGrow={1}

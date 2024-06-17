@@ -77,7 +77,7 @@ export default function LoginSection() {
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Sign in to Limeliteds Admin</Typography>
+      <Typography variant="h4">Sign in to Texitcoin Admin</Typography>
     </Stack>
   );
 
