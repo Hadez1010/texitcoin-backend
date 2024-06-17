@@ -1,29 +1,22 @@
 // ----------------------------------------------------------------------
 
-export default function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  price: number
-) {
+export default function createData(name: string, calories: number, fat: number, carbs: number) {
   return {
     name,
     calories,
     fat,
     carbs,
-    price,
     history: [
       {
         date: '2024-06-12',
-        txc: '11091700',
+        txc: 'ToVPDrBvSUFrdZasJrz9EXmdENBrt2g3bb',
         hashPower: 500,
         reward: 3800,
         sharePercent: '20%',
       },
       {
         date: '2024-06-12',
-        txc: '11091700',
+        txc: 'TuUhDsV4mw2V65ujSQwfboy27odR3EMQRT',
         hashPower: 500,
         reward: 3800,
         sharePercent: '20%',

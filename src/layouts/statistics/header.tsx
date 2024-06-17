@@ -1,17 +1,21 @@
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container';
 import { useTheme } from '@mui/material/styles';
+import LoadingButton from '@mui/lab/LoadingButton';
 
-import { useResponsive } from 'src/hooks/use-responsive';
+import { path } from 'src/routes/path';
+
+import { useOffSetTop } from 'src/hooks/use-off-set-top';
 
 import { bgBlur } from 'src/theme/css';
 
 import Logo from 'src/components/logo/logo';
 
-import { NAV, HEADER } from '../config-layout';
+import { HEADER } from '../config-layout';
+import HeaderShadow from '../common/header-shadow';
 import SettingsButton from '../common/settings-button';
-import AccountPopover from '../common/account-popover';
 
 // ----------------------------------------------------------------------
 
@@ -22,12 +26,10 @@ type Props = {
 export default function Header({ onOpenNav }: Props) {
   const theme = useTheme();
 
-  const isNavMini = 'mini';
-
-  const lgUp = useResponsive('up', 'lg');
+  const offsetTop = useOffSetTop(HEADER.H_DESKTOP);
 
   const renderContent = (
-    <>
+    <Container maxWidth="xl" sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
       <Logo
         sx={{
           mt: { xs: 2, md: 8 },
@@ -42,38 +44,47 @@ export default function Header({ onOpenNav }: Props) {
         spacing={{ xs: 0.5, sm: 1 }}
       >
         <SettingsButton />
-        <AccountPopover />
+
+        <LoadingButton
+          color="inherit"
+          size="medium"
+          type="submit"
+          href={path.login}
+          variant="contained"
+        >
+          Login
+        </LoadingButton>
       </Stack>
-    </>
+    </Container>
   );
 
   return (
-    <AppBar
-      sx={{
-        height: HEADER.H_MOBILE,
-        zIndex: theme.zIndex.appBar + 1,
-        ...bgBlur({
-          color: theme.palette.background.default,
-        }),
-        transition: theme.transitions.create(['height'], {
-          duration: theme.transitions.duration.shorter,
-        }),
-        ...(lgUp && {
-          height: HEADER.H_DESKTOP,
-          ...(isNavMini && {
-            width: `calc(100% - ${NAV.W_MINI - 90}px)`,
-          }),
-        }),
-      }}
-    >
+    <AppBar>
       <Toolbar
+        disableGutters
         sx={{
-          height: 1,
-          px: { lg: 5 },
+          height: {
+            xs: HEADER.H_MOBILE,
+            md: HEADER.H_DESKTOP,
+          },
+          transition: theme.transitions.create(['height'], {
+            easing: theme.transitions.easing.easeInOut,
+            duration: theme.transitions.duration.shorter,
+          }),
+          ...(offsetTop && {
+            ...bgBlur({
+              color: theme.palette.background.default,
+            }),
+            height: {
+              md: HEADER.H_DESKTOP_OFFSET,
+            },
+          }),
         }}
       >
         {renderContent}
       </Toolbar>
+
+      {offsetTop && <HeaderShadow />}
     </AppBar>
   );
 }

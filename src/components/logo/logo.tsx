@@ -19,7 +19,7 @@ const Logo = forwardRef<HTMLDivElement, LogoProps>(
       <Box
         component="img"
         src="https://i.ibb.co/wYDCzV6/texit-logo-v4.png"
-        sx={{ width: 40, height: 40, cursor: 'pointer', ...sx }}
+        sx={{ width: 60, height: 60, cursor: 'pointer', ...sx }}
       />
     );
 

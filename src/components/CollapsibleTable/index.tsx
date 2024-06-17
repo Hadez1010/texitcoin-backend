@@ -19,18 +19,23 @@ import createData from './utils';
 // ----------------------------------------------------------------------
 
 const TABLE_DATA = [
-  createData('2024-06-12', 159, 6.0, 24, 4.0),
-  createData('2024-06-13', 237, 9.0, 37, 4.3),
-  createData('2024-06-14', 262, 16.0, 24, 6.0),
-  createData('2024-06-15', 305, 3.7, 67, 4.3),
-  createData('2024-06-16', 356, 16.0, 49, 3.9),
+  createData('2024-06-16', 356, 5, 4990),
+  createData('2024-06-15', 305, 3, 6700),
+  createData('2024-06-14', 262, 5, 2400),
+  createData('2024-06-13', 237, 9, 3700),
+  createData('2024-06-12', 159, 6, 2400),
+  createData('2024-06-11', 356, 6, 4900),
+  createData('2024-06-10', 305, 7, 6700),
+  createData('2024-06-09', 262, 6, 2400),
+  createData('2024-06-08', 237, 9, 3700),
+  createData('2024-06-07', 159, 6, 2400),
 ];
 
 export default function CollapsibleTable() {
   return (
     <TableContainer sx={{ mt: 3, overflow: 'unset' }}>
       <Scrollbar>
-        <Table sx={{ minWidth: 800 }}>
+        <Table sx={{ minWidth: 800 }} size="small">
           <TableHead>
             <TableRow>
               <TableCell />

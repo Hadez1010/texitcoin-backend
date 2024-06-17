@@ -15,6 +15,12 @@ export const path = {
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD,
+    history: {
+      root: `${ROOTS.DASHBOARD}/history`,
+    },
+    award: {
+      root: `${ROOTS.DASHBOARD}/award`,
+    },
     user: {
       root: `${ROOTS.DASHBOARD}/users`,
       edit: (id: string) => `${ROOTS.DASHBOARD}/users/${id}`,

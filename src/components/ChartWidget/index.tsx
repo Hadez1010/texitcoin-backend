@@ -49,7 +49,7 @@ export default function ChartWidget({ title, subheader, chart, ...other }: Props
           series={item.data}
           options={chartOptions}
           width="100%"
-          height={364}
+          height={250}
         />
       ))}
     </Card>

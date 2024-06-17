@@ -10,7 +10,7 @@ export default function StatisticsSection() {
   const theme = useTheme();
 
   return (
-    <Container maxWidth={false}>
+    <Container maxWidth="xl">
       <Grid container spacing={3}>
         <Grid xs={12} md={4}>
           <WidgetSummary

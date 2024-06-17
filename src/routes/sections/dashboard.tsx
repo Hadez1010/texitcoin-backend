@@ -13,6 +13,9 @@ const UserListPage = lazy(() => import('src/pages/User/List'));
 const UserCreatePage = lazy(() => import('src/pages/User/Create'));
 const UserEditPage = lazy(() => import('src/pages/User/Edit'));
 
+const AwardPage = lazy(() => import('src/pages/Award'));
+const HistoryPage = lazy(() => import('src/pages/History'));
+
 // ----------------------------------------------------------------------
 
 export const dashboardRoutes: RouteObject[] = [
@@ -28,7 +31,7 @@ export const dashboardRoutes: RouteObject[] = [
       </AuthGuard>
     ),
     children: [
-      { element: <Navigate to={path.dashboard.user.root} replace />, index: true },
+      { element: <Navigate to={path.dashboard.history.root} replace />, index: true },
       {
         path: 'users',
         children: [
@@ -45,6 +48,14 @@ export const dashboardRoutes: RouteObject[] = [
             ],
           },
         ],
+      },
+      {
+        path: 'history',
+        children: [{ index: true, element: <HistoryPage /> }],
+      },
+      {
+        path: 'award',
+        children: [{ index: true, element: <AwardPage /> }],
       },
       // {
       //   path: 'organizations',
