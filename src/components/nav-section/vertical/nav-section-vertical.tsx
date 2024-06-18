@@ -51,8 +51,9 @@ function Group({ subheader, items, slotProps }: NavGroupProps) {
               fontSize: 11,
               cursor: 'pointer',
               typography: 'overline',
-              display: 'inline-flex',
+              display: 'block',
               color: 'text.disabled',
+              m: 'auto',
               mb: `${slotProps?.gap || 4}px`,
               p: (theme) => theme.spacing(2, 1, 1, 1.5),
               transition: (theme) =>

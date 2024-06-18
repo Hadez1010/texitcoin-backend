@@ -7,8 +7,12 @@ export type IUserTableFilterValue = string | string[];
 export type UserRole = 'all' | 'admin' | 'ap';
 
 export type IUserTableFilters = {
+  status: string;
   search: string;
-  status: UserRole;
+  username: string;
+  assetId: string;
+  hashPower: number;
+  txcCold: string;
 };
 
 export type IUserPrismaFilter = {
@@ -101,13 +105,12 @@ export type IUserCard = {
 
 export type IUserItem = {
   id: string;
-  name: string;
+  username: string;
   email: string;
-  avatarUrl?: string | null;
-  isSuperAdmin?: boolean | null;
-  isApUser?: boolean | null;
-  isBackOfficeUser?: boolean | null;
-  isEmailVerified?: boolean | null;
+  isAdmin?: boolean | null;
+  hashPower: number;
+  txcCold: string;
+  assetId: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;

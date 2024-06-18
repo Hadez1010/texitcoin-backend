@@ -48,7 +48,7 @@ export default function CollapsibleTable() {
 
           <TableBody>
             {TABLE_DATA.map((row) => (
-              <CollapsibleTableRow key={row.name} row={row} />
+              <CollapsibleTableRow key={row.date} row={row} />
             ))}
           </TableBody>
         </Table>
@@ -68,24 +68,23 @@ function CollapsibleTableRow({ row }: CollapsibleTableRowProps) {
 
   return (
     <>
-      <TableRow>
+      <TableRow hover>
         <TableCell>
           <IconButton
-            size="small"
             color={collapsible.value ? 'inherit' : 'default'}
             onClick={collapsible.onToggle}
+            sx={{ p: 0 }}
+            size="small"
           >
             <Iconify
               icon={collapsible.value ? 'eva:arrow-ios-upward-fill' : 'eva:arrow-ios-downward-fill'}
             />
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell align="left">{row.calories}</TableCell>
-        <TableCell align="left">{row.fat}</TableCell>
-        <TableCell align="left">{row.carbs}</TableCell>
+        <TableCell align="left">{row.date}</TableCell>
+        <TableCell align="left">{row.totalHash}</TableCell>
+        <TableCell align="left">{row.members}</TableCell>
+        <TableCell align="left">{row.txcShared}</TableCell>
       </TableRow>
 
       <TableRow>
@@ -94,14 +93,14 @@ function CollapsibleTableRow({ row }: CollapsibleTableRowProps) {
             <Paper
               variant="outlined"
               sx={{
-                py: 2,
+                p: 1,
                 borderRadius: 1.5,
                 ...(collapsible.value && {
                   boxShadow: (theme) => theme.customShadows.z20,
                 }),
               }}
             >
-              <Typography variant="h6" sx={{ m: 2, mt: 0 }}>
+              <Typography variant="subtitle1" sx={{ m: 1, mt: 0 }}>
                 History
               </Typography>
 
@@ -118,7 +117,7 @@ function CollapsibleTableRow({ row }: CollapsibleTableRowProps) {
 
                 <TableBody>
                   {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                    <TableRow hover key={historyRow.date}>
                       <TableCell component="th" scope="row">
                         {historyRow.date}
                       </TableCell>

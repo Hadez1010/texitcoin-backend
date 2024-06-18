@@ -1,11 +1,16 @@
 // ----------------------------------------------------------------------
 
-export default function createData(name: string, calories: number, fat: number, carbs: number) {
+export default function createData(
+  date: string,
+  totalHash: number,
+  members: number,
+  txcShared: number
+) {
   return {
-    name,
-    calories,
-    fat,
-    carbs,
+    date,
+    totalHash,
+    members,
+    txcShared,
     history: [
       {
         date: '2024-06-12',

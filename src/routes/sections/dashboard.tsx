@@ -57,23 +57,6 @@ export const dashboardRoutes: RouteObject[] = [
         path: 'award',
         children: [{ index: true, element: <AwardPage /> }],
       },
-      // {
-      //   path: 'organizations',
-      //   children: [
-      //     { index: true, element: <OrganizationListPage /> },
-      //     { path: 'new', element: <OrganizationCreatePage /> },
-      //     {
-      //       path: ':id',
-      //       children: [
-      //         { index: true, element: <Navigate to="general" replace /> },
-      //         {
-      //           path: ':tab',
-      //           element: <OrganizationEditPage />,
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
     ],
   },
 ];

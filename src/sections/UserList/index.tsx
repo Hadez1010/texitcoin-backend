@@ -64,6 +64,10 @@ const TABLE_HEAD = [
 const defaultFilter: IUserTableFilters = {
   search: '',
   status: 'all',
+  username: '',
+  assetId: '',
+  hashPower: 0,
+  txcCold: '',
 };
 
 // ----------------------------------------------------------------------
