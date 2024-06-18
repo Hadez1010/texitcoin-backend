@@ -9,11 +9,11 @@ import ComponentBlock from 'src/components/Component-Block';
 export default function Send() {
   const sendmany = [
     'sendmany "" "{',
-    '"TZv8yqaApXxxEAbr6msYiXorN839CmdbFq": 19000,',
-    '"TbGWvgFVhbxD8RpAd9mWpuQcqLT1sd7n5t": 19000,',
-    '"Te4cN9yuqapro1MoDkzvRvb9bgCtNbmpfP": 19000,',
-    '"Th8Msbi91ePWv2AHzpJZ1hJGxZBZ7ewnxz": 19000,',
-    '"TixxDLboL7wP1MyA76V1BHhxKVnfArrvQf": 19000}',
+    '\\"TZv8yqaApXxxEAbr6msYiXorN839CmdbFq\\": 19000,',
+    '\\"TbGWvgFVhbxD8RpAd9mWpuQcqLT1sd7n5t\\": 19000,',
+    '\\"Te4cN9yuqapro1MoDkzvRvb9bgCtNbmpfP\\": 19000,',
+    '\\"Th8Msbi91ePWv2AHzpJZ1hJGxZBZ7ewnxz\\": 19000,',
+    '\\"TixxDLboL7wP1MyA76V1BHhxKVnfArrvQf\\": 19000}',
   ];
 
   return (
