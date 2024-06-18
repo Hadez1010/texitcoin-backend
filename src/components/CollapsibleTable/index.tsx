@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import TableRow from '@mui/material/TableRow';
@@ -13,6 +15,7 @@ import { useBoolean } from 'src/hooks/useBoolean';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+import { useTable, getComparator, TablePaginationCustom } from 'src/components/Table';
 
 import createData from './utils';
 
@@ -29,31 +32,60 @@ const TABLE_DATA = [
   createData('2024-06-09', 262, 6, 2400),
   createData('2024-06-08', 237, 9, 3700),
   createData('2024-06-07', 159, 6, 2400),
+  createData('2024-06-06', 262, 6, 2400),
+  createData('2024-06-05', 237, 9, 3700),
+  createData('2024-06-04', 159, 6, 2400),
 ];
 
 export default function CollapsibleTable() {
-  return (
-    <TableContainer sx={{ mt: 3, overflow: 'unset' }}>
-      <Scrollbar>
-        <Table sx={{ minWidth: 800 }} size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell align="left">Date</TableCell>
-              <TableCell align="left">Total Hash</TableCell>
-              <TableCell align="left">Members</TableCell>
-              <TableCell align="left">TXC</TableCell>
-            </TableRow>
-          </TableHead>
+  const [tableData] = useState(TABLE_DATA);
 
-          <TableBody>
-            {TABLE_DATA.map((row) => (
-              <CollapsibleTableRow key={row.date} row={row} />
-            ))}
-          </TableBody>
-        </Table>
-      </Scrollbar>
-    </TableContainer>
+  const table = useTable({
+    defaultRowsPerPage: 10,
+  });
+
+  const dataFiltered = applyFilter({
+    inputData: tableData,
+    comparator: getComparator(table.order, table.orderBy),
+  });
+
+  return (
+    <>
+      <TableContainer sx={{ mt: 3, overflow: 'unset' }}>
+        <Scrollbar>
+          <Table sx={{ minWidth: 800 }} size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell align="left">Date</TableCell>
+                <TableCell align="left">Total Hash</TableCell>
+                <TableCell align="left">Members</TableCell>
+                <TableCell align="left">TXC</TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {dataFiltered
+                .slice(
+                  table.page * table.rowsPerPage,
+                  table.page * table.rowsPerPage + table.rowsPerPage
+                )
+                .map((row) => (
+                  <CollapsibleTableRow key={row.date} row={row} />
+                ))}
+            </TableBody>
+          </Table>
+        </Scrollbar>
+      </TableContainer>
+
+      <TablePaginationCustom
+        count={dataFiltered.length}
+        page={table.page}
+        rowsPerPage={table.rowsPerPage}
+        onPageChange={table.onChangePage}
+        onRowsPerPageChange={table.onChangeRowsPerPage}
+      />
+    </>
   );
 }
 
@@ -135,4 +167,26 @@ function CollapsibleTableRow({ row }: CollapsibleTableRowProps) {
       </TableRow>
     </>
   );
+}
+
+// ----------------------------------------------------------------------
+
+function applyFilter({
+  inputData,
+  comparator,
+}: {
+  inputData: any[];
+  comparator: (a: any, b: any) => number;
+}) {
+  const stabilizedThis = inputData.map((el, index) => [el, index] as const);
+
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+
+  inputData = stabilizedThis.map((el) => el[0]);
+
+  return inputData;
 }
