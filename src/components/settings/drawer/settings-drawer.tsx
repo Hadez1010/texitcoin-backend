@@ -12,9 +12,9 @@ import { paper } from 'src/theme/css';
 import Iconify from '../../iconify';
 import Scrollbar from '../../scrollbar';
 import BaseOptions from './base-option';
-import LayoutOptions from './layout-options';
+// import LayoutOptions from './layout-options';
 import PresetsOptions from './presets-options';
-import StretchOptions from './stretch-options';
+// import StretchOptions from './stretch-options';
 import { useSettingsContext } from '../context';
 import FullScreenOption from './fullscreen-option';
 
@@ -101,43 +101,43 @@ export default function SettingsDrawer() {
     </div>
   );
 
-  const renderLayout = (
-    <div>
-      <Typography variant="caption" component="div" sx={{ ...labelStyles }}>
-        Layout
-      </Typography>
+  // const renderLayout = (
+  //   <div>
+  //     <Typography variant="caption" component="div" sx={{ ...labelStyles }}>
+  //       Layout
+  //     </Typography>
 
-      <LayoutOptions
-        value={settings.themeLayout}
-        onChange={(newValue: string) => settings.onUpdate('themeLayout', newValue)}
-        options={['vertical', 'horizontal', 'mini']}
-      />
-    </div>
-  );
+  //     <LayoutOptions
+  //       value={settings.themeLayout}
+  //       onChange={(newValue: string) => settings.onUpdate('themeLayout', newValue)}
+  //       options={['vertical', 'horizontal', 'mini']}
+  //     />
+  //   </div>
+  // );
 
-  const renderStretch = (
-    <div>
-      <Typography
-        variant="caption"
-        component="div"
-        sx={{
-          ...labelStyles,
-          display: 'inline-flex',
-          alignItems: 'center',
-        }}
-      >
-        Stretch
-        <Tooltip title="Only available at large resolutions > 1600px (xl)">
-          <Iconify icon="eva:info-outline" width={16} sx={{ ml: 0.5 }} />
-        </Tooltip>
-      </Typography>
+  // const renderStretch = (
+  //   <div>
+  //     <Typography
+  //       variant="caption"
+  //       component="div"
+  //       sx={{
+  //         ...labelStyles,
+  //         display: 'inline-flex',
+  //         alignItems: 'center',
+  //       }}
+  //     >
+  //       Stretch
+  //       <Tooltip title="Only available at large resolutions > 1600px (xl)">
+  //         <Iconify icon="eva:info-outline" width={16} sx={{ ml: 0.5 }} />
+  //       </Tooltip>
+  //     </Typography>
 
-      <StretchOptions
-        value={settings.themeStretch}
-        onChange={() => settings.onUpdate('themeStretch', !settings.themeStretch)}
-      />
-    </div>
-  );
+  //     <StretchOptions
+  //       value={settings.themeStretch}
+  //       onChange={() => settings.onUpdate('themeStretch', !settings.themeStretch)}
+  //     />
+  //   </div>
+  // );
 
   const renderPresets = (
     <div>
@@ -179,9 +179,9 @@ export default function SettingsDrawer() {
 
           {renderDirection}
 
-          {renderLayout}
+          {/* {renderLayout} */}
 
-          {renderStretch}
+          {/* {renderStretch} */}
 
           {renderPresets}
         </Stack>
