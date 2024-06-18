@@ -32,8 +32,8 @@ export class Sale extends BaseEntity {
   @Field(() => ID)
   statisticsId: string;
 
-  @Field(() => [Statistics], { nullable: true })
-  statistics?: Statistics[];
+  @Field(() => Statistics, { nullable: true })
+  statistics?: Statistics;
   @Field()
   issuedAt: Date;
 }

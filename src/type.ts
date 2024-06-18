@@ -9,6 +9,25 @@ enum UserGroupRole {
   Owner = 'Owner',
 }
 
+export interface SaleReportInput {
+  invoiceNo: number;
+  username: string;
+  mobile: string;
+  email: string;
+  productName: string;
+  date: Date;
+  paymentMethod: string;
+  amount: number;
+  hashPower: number;
+  assetId: string;
+}
+
+export interface MineStatInput {
+  date: Date;
+  totalBlock: number;
+  newBlock: number;
+}
+
 export interface UserGroupPermission {
   Report: UserGroupRole;
   Vendor: UserGroupRole;
