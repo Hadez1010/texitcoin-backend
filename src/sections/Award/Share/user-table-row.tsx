@@ -33,7 +33,7 @@ export default function UserTableRow({
   onSelectRow,
   onDeleteRow,
 }: Props) {
-  const { username, assetId, txcCold, hashPower } = row;
+  const { username, email, isAdmin } = row;
 
   const confirm = useBoolean();
 
@@ -61,10 +61,8 @@ export default function UserTableRow({
         </TableCell> */}
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{username}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{assetId}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{hashPower}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{hashPower}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{txcCold}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{email}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{isAdmin}</TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <Tooltip title="Quick Edit" placement="top" arrow>

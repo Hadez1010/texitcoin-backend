@@ -4,21 +4,17 @@
 
 export type IUserTableFilterValue = string | string[];
 
-export type UserRole = 'all' | 'admin' | 'ap';
+export type UserRole = 'all' | 'admin';
 
 export type IUserTableFilters = {
   status: string;
   search: string;
   username: string;
-  assetId: string;
-  hashPower: number;
-  txcCold: string;
 };
 
 export type IUserPrismaFilter = {
   OR?: any;
-  isSuperAdmin?: boolean;
-  isApUser?: boolean;
+  isAdmin?: boolean;
 };
 
 // ----------------------------------------------------------------------
@@ -108,9 +104,6 @@ export type IUserItem = {
   username: string;
   email: string;
   isAdmin?: boolean | null;
-  hashPower: number;
-  txcCold: string;
-  assetId: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;

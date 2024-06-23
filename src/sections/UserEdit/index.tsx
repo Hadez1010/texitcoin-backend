@@ -39,33 +39,8 @@ const FETCH_USER = gql(/* GraphQL */ `
       users {
         id
         username
-        fullname
-        sponsorName
-        introducerFullName
         email
-        password
-        mobile
-        assetId
-        commissionPayout
-        txcPayout
-        txcCold
         isAdmin
-        sales {
-          invoiceNo
-          amount
-          hashPower
-          productName
-          paymentMethod
-          issuedAt
-          statistics {
-            newBlocks
-            newHashPower
-            totalBlocks
-            totalHashPower
-            members
-            issuedAt
-          }
-        }
       }
     }
   }

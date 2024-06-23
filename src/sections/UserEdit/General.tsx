@@ -30,15 +30,7 @@ const UPDATE_USER = gql(/* GraphQL */ `
     updateUser(data: $data) {
       id
       username
-      fullname
-      sponsorName
-      introducerFullName
       email
-      mobile
-      assetId
-      commissionPayout
-      txcPayout
-      txcCold
       isAdmin
     }
   }
@@ -48,9 +40,6 @@ const UPDATE_USER = gql(/* GraphQL */ `
 
 const userSchema = Yup.object().shape({
   username: Yup.string().required('username is required'),
-  fullname: Yup.string().required('fullname is required'),
-  sponsorName: Yup.string().required('sponsorName is required'),
-  introducerFullName: Yup.string().required('introducerFullName is required'),
   email: Yup.string().required('Email is required').email('Email must be a valid email address'),
   isAdmin: Yup.boolean().nullable(),
 });

@@ -34,17 +34,11 @@ export default function UserQuickEditForm({ currentUser, open, onClose }: Props)
 
   const NewUserSchema = Yup.object().shape({
     username: Yup.string().required('Name is required'),
-    assetId: Yup.string().required('AssetId is required'),
-    hashPower: Yup.number().required('HashPower is required'),
-    txcCold: Yup.string().required('TXC-Cold is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
       username: currentUser?.username || '',
-      hashPower: currentUser?.hashPower || 0,
-      assetId: currentUser?.assetId || '',
-      txcCold: currentUser?.txcCold || '',
     }),
     [currentUser]
   );

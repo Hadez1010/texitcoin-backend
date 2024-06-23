@@ -39,8 +39,6 @@ export default function UserTableRow({
       </TableCell>
 
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        {/* <Avatar alt={username} src={avatarUrl || undefined} sx={{ mr: 2 }} /> */}
-
         <ListItemText
           primary={username}
           secondary={email}

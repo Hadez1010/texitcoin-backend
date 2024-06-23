@@ -26,15 +26,7 @@ const CREATE_USER = gql(/* GraphQL */ `
   mutation CreateUser($data: CreateUserInput!) {
     createUser(data: $data) {
       username
-      fullname
-      sponsorName
-      introducerFullName
       email
-      mobile
-      assetId
-      commissionPayout
-      txcPayout
-      txcCold
       isAdmin
       createdAt
     }
@@ -52,7 +44,7 @@ const NewUserSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
   mobile: Yup.string().required('Mobile number is required'),
   assetId: Yup.string().required('AssetId is required'),
-  commissionPayout: Yup.string().required('CommissionPayout is required'),
+  address: Yup.string().required('Address is required'),
   txcPayout: Yup.string().required('TxcPayout is required'),
   txcCold: Yup.string().required('TxcCold is requried'),
   isAdmin: Yup.boolean().required(),
@@ -73,7 +65,7 @@ export default function UserCreateForm() {
       password: '',
       mobile: '',
       assetId: '',
-      commissionPayout: '',
+      address: '',
       txcPayout: '',
       txcCold: '',
       isAdmin: false,

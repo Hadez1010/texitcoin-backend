@@ -47,14 +47,11 @@ import UserTableFiltersResult from './UserTableFiltersResult';
 const STATUS_OPTIONS: { value: UserRole; label: string; color: LabelColor }[] = [
   { value: 'all', label: 'All', color: 'info' },
   { value: 'admin', label: 'Admin', color: 'success' },
-  { value: 'ap', label: 'AP user', color: 'secondary' },
 ];
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', sortable: true },
-  { id: 'organizations', label: 'Organization', width: 220 },
-  { id: 'isSuperAdmin', label: 'Admin', width: 130, sortable: true },
-  { id: 'isApUser', label: 'AP user', width: 130, sortable: true },
+  { id: 'username', label: 'Username', sortable: true },
+  { id: 'isAdmin', label: 'Admin', width: 130, sortable: true },
   { id: 'createdAt', label: 'Created At', width: 140, sortable: true },
   { id: 'updatedAt', label: 'Updated At', width: 140, sortable: true },
   { id: 'deletedAt', label: 'Status', width: 95, sortable: true },
@@ -65,22 +62,16 @@ const defaultFilter: IUserTableFilters = {
   search: '',
   status: 'all',
   username: '',
-  assetId: '',
-  hashPower: 0,
-  txcCold: '',
 };
 
 // ----------------------------------------------------------------------
 
 const FETCH_USER_STATS_QUERY = gql(/* GraphQL */ `
-  query FetchUserStats($adminFilter: JSONObject, $apFilter: JSONObject) {
+  query FetchUserStats($adminFilter: JSONObject) {
     all: users {
       total
     }
     admin: users(filter: $adminFilter) {
-      total
-    }
-    ap: users(filter: $apFilter) {
       total
     }
   }
@@ -92,16 +83,7 @@ const FETCH_USERS_QUERY = gql(/* GraphQL */ `
       users {
         id
         username
-        fullname
-        sponsorName
-        introducerFullName
         email
-        password
-        mobile
-        assetId
-        commissionPayout
-        txcPayout
-        txcCold
         isAdmin
         createdAt
         updatedAt
@@ -133,11 +115,7 @@ export default function UserListView() {
     }
 
     if (filter.status === 'admin') {
-      filterObj.isSuperAdmin = true;
-    }
-
-    if (filter.status === 'ap') {
-      filterObj.isApUser = true;
+      filterObj.isAdmin = true;
     }
 
     return filterObj;
@@ -156,7 +134,7 @@ export default function UserListView() {
   const canReset = !!filter.search;
 
   const { data: statsData } = useGraphQuery(FETCH_USER_STATS_QUERY, {
-    variables: { adminFilter: { isSuperAdmin: true }, apFilter: { isApUser: true } },
+    variables: { adminFilter: { isAdmin: true } },
   });
 
   const { loading, data } = useGraphQuery(FETCH_USERS_QUERY, {
