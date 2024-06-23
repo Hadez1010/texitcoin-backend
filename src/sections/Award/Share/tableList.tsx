@@ -50,9 +50,6 @@ const TABLE_HEAD = [
 
 const defaultFilters: IUserTableFilters = {
   username: '',
-  assetId: '',
-  hashPower: 0,
-  txcCold: '',
   search: '',
   status: 'all',
 };
@@ -274,7 +271,7 @@ function applyFilter({
   comparator: (a: any, b: any) => number;
   filters: IUserTableFilters;
 }) {
-  const { username, assetId, hashPower, txcCold } = filters;
+  const { username } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index] as const);
 
@@ -289,24 +286,6 @@ function applyFilter({
   if (username) {
     inputData = inputData.filter(
       (user) => user.username.toLowerCase().indexOf(username.toLowerCase()) !== -1
-    );
-  }
-
-  if (assetId) {
-    inputData = inputData.filter(
-      (user) => user.assetId.toLowerCase().indexOf(assetId.toLowerCase()) !== -1
-    );
-  }
-
-  if (hashPower) {
-    inputData = inputData.filter(
-      (user) => user.hashPower.toLowerCase().indexOf(`${hashPower}`.toLowerCase()) !== -1
-    );
-  }
-
-  if (txcCold) {
-    inputData = inputData.filter(
-      (user) => user.txcCold.toLowerCase().indexOf(txcCold.toLowerCase()) !== -1
     );
   }
 
