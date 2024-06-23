@@ -52,7 +52,7 @@ export function useNavData() {
       {
         subheader: 'Texitcoin Administration',
         items: [
-          { title: 'History', path: path.dashboard.history.root, icon: ICONS.analytics },
+          { title: 'Dashboard', path: path.dashboard.history.root, icon: ICONS.analytics },
           { title: 'Award', path: path.dashboard.award.root, icon: ICONS.invoice },
           { title: 'User', path: path.dashboard.user.root, icon: ICONS.user },
           // { title: 'Organization', path: path.dashboard.org.root, icon: ICONS.school },
