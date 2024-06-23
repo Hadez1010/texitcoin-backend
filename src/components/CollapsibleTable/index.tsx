@@ -17,11 +17,7 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { LoadingScreen } from 'src/components/loading-screen';
 
-import { IStatisticsPrismaFilter } from 'src/types/statistics';
-
 import { FETCH_STATISTICS_QUERY } from 'src/sections/Statistics/query';
-
-// import createData from './utils';
 
 // ----------------------------------------------------------------------
 

@@ -1,31 +1,27 @@
 // ----------------------------------------------------------------------
 
 export default function createData(
-  date: string,
-  totalHash: number,
+  issuedAt: string,
+  totalBlocks: number,
+  newBlocks: number,
+  newHashPower: number,
+  totalHashPower: number,
   members: number,
-  txcShared: number
+  from: string,
+  to: string,
+  status: boolean,
+  memberStatistics: any[]
 ) {
   return {
-    date,
-    totalHash,
+    issuedAt,
+    totalBlocks,
+    newBlocks,
+    newHashPower,
+    totalHashPower,
     members,
-    txcShared,
-    history: [
-      {
-        date: '2024-06-12',
-        txc: 'ToVPDrBvSUFrdZasJrz9EXmdENBrt2g3bb',
-        hashPower: 500,
-        reward: 3800,
-        sharePercent: '20%',
-      },
-      {
-        date: '2024-06-12',
-        txc: 'TuUhDsV4mw2V65ujSQwfboy27odR3EMQRT',
-        hashPower: 500,
-        reward: 3800,
-        sharePercent: '20%',
-      },
-    ],
+    from,
+    to,
+    status,
+    memberStatistics,
   };
 }
