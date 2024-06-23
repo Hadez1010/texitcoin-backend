@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useQuery as useGraphQuery } from '@apollo/client';
 
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
@@ -15,84 +15,80 @@ import { useBoolean } from 'src/hooks/useBoolean';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import { useTable, getComparator, TablePaginationCustom } from 'src/components/Table';
+import { LoadingScreen } from 'src/components/loading-screen';
 
-import createData from './utils';
+import { IStatisticsPrismaFilter } from 'src/types/statistics';
+
+import { FETCH_STATISTICS_QUERY } from 'src/sections/Statistics/query';
+
+// import createData from './utils';
 
 // ----------------------------------------------------------------------
 
-const TABLE_DATA = [
-  createData('2024-06-16', 356, 5, 4990),
-  createData('2024-06-15', 305, 3, 6700),
-  createData('2024-06-14', 262, 5, 2400),
-  createData('2024-06-13', 237, 9, 3700),
-  createData('2024-06-12', 159, 6, 2400),
-  createData('2024-06-11', 356, 6, 4900),
-  createData('2024-06-10', 305, 7, 6700),
-  createData('2024-06-09', 262, 6, 2400),
-  createData('2024-06-08', 237, 9, 3700),
-  createData('2024-06-07', 159, 6, 2400),
-  createData('2024-06-06', 262, 6, 2400),
-  createData('2024-06-05', 237, 9, 3700),
-  createData('2024-06-04', 159, 6, 2400),
-];
-
 export default function CollapsibleTable() {
-  const [tableData] = useState(TABLE_DATA);
+  const { loading: statisticsLoading, data: statisticsData } = useGraphQuery(
+    FETCH_STATISTICS_QUERY,
+    {
+      variables: {
+        page: '1, 1000',
+        filter: {},
+        sort: '-createdAt',
+      },
+    }
+  );
 
-  const table = useTable({
-    defaultRowsPerPage: 10,
-  });
-
-  const dataFiltered = applyFilter({
-    inputData: tableData,
-    comparator: getComparator(table.order, table.orderBy),
-  });
+  const tableData = statisticsData?.statistics;
 
   return (
-    <>
+    <Paper
+      variant="outlined"
+      sx={{
+        width: '100%',
+        m: 0.5,
+        mt: 2,
+        p: 2,
+        borderRadius: 1.5,
+      }}
+    >
+      <Typography variant="subtitle1">TXC Payout</Typography>
       <TableContainer sx={{ mt: 3, overflow: 'unset' }}>
         <Scrollbar>
-          <Table sx={{ minWidth: 800 }} size="small">
+          <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell />
                 <TableCell align="left">Date</TableCell>
-                <TableCell align="left">Total Hash</TableCell>
+                <TableCell align="left">New Blocks</TableCell>
+                <TableCell align="left">Total Blocks</TableCell>
+                <TableCell align="left">New Hash Power</TableCell>
+                <TableCell align="left">Total Hash Power</TableCell>
                 <TableCell align="left">Members</TableCell>
-                <TableCell align="left">TXC</TableCell>
+                <TableCell align="left">From</TableCell>
+                <TableCell align="left">To</TableCell>
+                <TableCell align="left">Status</TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
-              {dataFiltered
-                .slice(
-                  table.page * table.rowsPerPage,
-                  table.page * table.rowsPerPage + table.rowsPerPage
-                )
-                .map((row) => (
-                  <CollapsibleTableRow key={row.date} row={row} />
-                ))}
+              {statisticsLoading ? (
+                <LoadingScreen />
+              ) : (
+                tableData!.statistics!.map((row) => (
+                  <CollapsibleTableRow key={row!.id} row={row!} />
+                ))
+              )}
             </TableBody>
           </Table>
         </Scrollbar>
       </TableContainer>
-
-      <TablePaginationCustom
-        count={dataFiltered.length}
-        page={table.page}
-        rowsPerPage={table.rowsPerPage}
-        onPageChange={table.onChangePage}
-        onRowsPerPageChange={table.onChangeRowsPerPage}
-      />
-    </>
+    </Paper>
   );
 }
 
 // ----------------------------------------------------------------------
 
 type CollapsibleTableRowProps = {
-  row: ReturnType<typeof createData>;
+  row: any;
 };
 
 function CollapsibleTableRow({ row }: CollapsibleTableRowProps) {
@@ -113,14 +109,19 @@ function CollapsibleTableRow({ row }: CollapsibleTableRowProps) {
             />
           </IconButton>
         </TableCell>
-        <TableCell align="left">{row.date}</TableCell>
-        <TableCell align="left">{row.totalHash}</TableCell>
+        <TableCell align="left">{new Date(row.issuedAt).toISOString().split('T')[0]}</TableCell>
+        <TableCell align="left">{row.newBlocks}</TableCell>
+        <TableCell align="left">{row.totalBlocks}</TableCell>
+        <TableCell align="left">{row.newHashPower}</TableCell>
+        <TableCell align="left">{row.totalHashPower}</TableCell>
         <TableCell align="left">{row.members}</TableCell>
-        <TableCell align="left">{row.txcShared}</TableCell>
+        <TableCell align="left">{new Date(row.from).toUTCString()}</TableCell>
+        <TableCell align="left">{new Date(row.to).toUTCString()}</TableCell>
+        <TableCell align="left">{row.status ? 'Confirmed' : 'Pending'}</TableCell>
       </TableRow>
 
       <TableRow>
-        <TableCell sx={{ py: 0 }} colSpan={6}>
+        <TableCell sx={{ py: 0 }} colSpan={12}>
           <Collapse in={collapsible.value} unmountOnExit>
             <Paper
               variant="outlined"
@@ -132,31 +133,37 @@ function CollapsibleTableRow({ row }: CollapsibleTableRowProps) {
                 }),
               }}
             >
-              <Typography variant="subtitle1" sx={{ m: 1, mt: 0 }}>
+              <Typography variant="subtitle1" sx={{ m: 2 }}>
                 History
               </Typography>
 
-              <Table size="small" aria-label="purchases">
+              <Table size="small" aria-label="memberStatistics" sx={{ width: '100%' }}>
                 <TableHead>
                   <TableRow>
                     <TableCell align="left">Date</TableCell>
-                    <TableCell align="left">TXC-Cold</TableCell>
+                    <TableCell align="left">Username</TableCell>
+                    <TableCell align="left">Email</TableCell>
+                    <TableCell align="left">Mobile</TableCell>
+                    <TableCell align="left">TXC Cold</TableCell>
                     <TableCell align="left">Hash Power</TableCell>
                     <TableCell align="left">Reward</TableCell>
-                    <TableCell align="left">Share Percent</TableCell>
+                    <TableCell align="left">Percent</TableCell>
                   </TableRow>
                 </TableHead>
 
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow hover key={historyRow.date}>
+                  {row!.memberStatistics!.map((item: any) => (
+                    <TableRow hover key={item.id}>
                       <TableCell component="th" scope="row">
-                        {historyRow.date}
+                        {new Date(item.issuedAt).toISOString().split('T')[0]}
                       </TableCell>
-                      <TableCell align="left">{historyRow.txc}</TableCell>
-                      <TableCell align="left">{historyRow.hashPower}</TableCell>
-                      <TableCell align="left">{historyRow.reward}</TableCell>
-                      <TableCell align="left">{historyRow.sharePercent}</TableCell>
+                      <TableCell align="left">{item.member.username}</TableCell>
+                      <TableCell align="left">{item.member.email}</TableCell>
+                      <TableCell align="left">{item.member.mobile}</TableCell>
+                      <TableCell align="left">{item.member.txcCold}</TableCell>
+                      <TableCell align="left">{item.hashPower}</TableCell>
+                      <TableCell align="left">{item.txcShared}</TableCell>
+                      <TableCell align="left">{item.percent}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -167,26 +174,4 @@ function CollapsibleTableRow({ row }: CollapsibleTableRowProps) {
       </TableRow>
     </>
   );
-}
-
-// ----------------------------------------------------------------------
-
-function applyFilter({
-  inputData,
-  comparator,
-}: {
-  inputData: any[];
-  comparator: (a: any, b: any) => number;
-}) {
-  const stabilizedThis = inputData.map((el, index) => [el, index] as const);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  inputData = stabilizedThis.map((el) => el[0]);
-
-  return inputData;
 }
