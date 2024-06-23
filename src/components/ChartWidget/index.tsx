@@ -11,7 +11,7 @@ interface Props extends CardProps {
   title?: string;
   subheader?: string;
   chart: {
-    categories?: string[];
+    categories?: any[];
     colors?: string[];
     series: {
       data: {
