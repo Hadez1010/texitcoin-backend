@@ -108,7 +108,7 @@ export default function WidgetSummary({ title, percent, total, chart, sx, ...oth
         </Typography>
 
         <Typography variant="h3" gutterBottom>
-          {fNumber(total)}
+          {fNumber(total) || 0}
         </Typography>
 
         {renderTrending}
