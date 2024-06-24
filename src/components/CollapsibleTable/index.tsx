@@ -28,7 +28,7 @@ export default function CollapsibleTable() {
       variables: {
         page: '1, 1000',
         filter: {},
-        sort: '-createdAt',
+        sort: 'createdAt',
       },
     }
   );

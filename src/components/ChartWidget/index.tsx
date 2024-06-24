@@ -21,9 +21,26 @@ interface Props extends CardProps {
     }[];
     options?: ApexOptions;
   };
+  type?:
+    | 'line'
+    | 'area'
+    | 'bar'
+    | 'pie'
+    | 'donut'
+    | 'radialBar'
+    | 'scatter'
+    | 'bubble'
+    | 'heatmap'
+    | 'candlestick'
+    | 'boxPlot'
+    | 'radar'
+    | 'polarArea'
+    | 'rangeBar'
+    | 'rangeArea'
+    | 'treemap';
 }
 
-export default function ChartWidget({ title, subheader, chart, ...other }: Props) {
+export default function ChartWidget({ title, subheader, chart, type, ...other }: Props) {
   const { colors, categories, series, options } = chart;
 
   const chartOptions = useChart({
@@ -45,7 +62,7 @@ export default function ChartWidget({ title, subheader, chart, ...other }: Props
       {series.map((item) => (
         <Chart
           dir="ltr"
-          type="area"
+          type={type ?? 'area'}
           series={item.data}
           options={chartOptions}
           width="100%"
