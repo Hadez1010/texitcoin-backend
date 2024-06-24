@@ -171,8 +171,6 @@ export default function UserListView() {
     [setQuery, query, page]
   );
 
-  console.log('users => ', tableData);
-
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>

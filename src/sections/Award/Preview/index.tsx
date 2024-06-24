@@ -131,12 +131,6 @@ export default function Preview() {
       </Grid>
       <Grid container spacing={3} sx={{ pl: 1 }}>
         <Grid xs={4} md={2}>
-          Members
-        </Grid>
-        <Grid xs={8} md={4}>
-          123
-        </Grid>
-        <Grid xs={4} md={2}>
           <Typography variant="subtitle2">TXC Shared: </Typography>
         </Grid>
         <Grid xs={8} md={4}>

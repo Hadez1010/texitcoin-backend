@@ -7,7 +7,6 @@ import { ApolloError, useMutation } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -164,38 +163,6 @@ export default function UserCreateForm() {
               />
 
               <RHFSwitch
-                name="isApUser"
-                labelPlacement="start"
-                label={
-                  <>
-                    <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                      AP user
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      AP user permission
-                    </Typography>
-                  </>
-                }
-                sx={{ mx: 0, px: 1, width: 1, justifyContent: 'space-between' }}
-              />
-
-              <RHFSwitch
-                name="isBackOfficeUser"
-                labelPlacement="start"
-                label={
-                  <>
-                    <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                      Back Office User
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      AP user permission
-                    </Typography>
-                  </>
-                }
-                sx={{ mx: 0, px: 1, width: 1, justifyContent: 'space-between' }}
-              />
-
-              <RHFSwitch
                 name="isEmailVerified"
                 labelPlacement="start"
                 label={
@@ -211,15 +178,6 @@ export default function UserCreateForm() {
                 sx={{ mx: 0, px: 1, width: 1, justifyContent: 'space-between' }}
               />
             </Box>
-
-            <Divider sx={{ borderStyle: 'dashed', my: 3 }} />
-
-            <Stack spacing={1} sx={{ mb: 3 }}>
-              <Typography variant="subtitle2">Organizations</Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                Assign organizations to this user. This is optional.
-              </Typography>
-            </Stack>
 
             {/* <Box
               rowGap={3}
