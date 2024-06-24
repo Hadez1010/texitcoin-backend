@@ -1,3 +1,5 @@
+import { useQuery as useGraphQuery } from '@apollo/client';
+
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 
@@ -5,70 +7,70 @@ import ChartWidget from 'src/components/ChartWidget';
 import { useSettingsContext } from 'src/components/settings';
 import CollapsibleTable from 'src/components/CollapsibleTable';
 
+import { FETCH_STATISTICS_QUERY } from './query';
+
 export default function HistoryView() {
   const settings = useSettingsContext();
+
+  const { loading: statisticsLoading, data: statisticsData } = useGraphQuery(
+    FETCH_STATISTICS_QUERY,
+    {
+      variables: {
+        page: '1,20',
+      },
+    }
+  );
+
+  const statistics = statisticsLoading ? { statistics: [], total: 0 } : statisticsData?.statistics;
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Grid container spacing={3}>
         <Grid xs={12} md={6}>
           <ChartWidget
-            title="Daily Reward"
-            subheader="(+20%) than last day"
+            title="Daily"
             chart={{
-              categories: [
-                '6/4',
-                '6/5',
-                '6/6',
-                '6/7',
-                '6/8',
-                '6/9',
-                '6/10',
-                '6/11',
-                '6/12',
-                '6/13',
-                '6/14',
-                '6/15',
-              ],
+              categories: statistics?.statistics!.map(
+                (item) => new Date(item!.issuedAt).toISOString().split('T')[0]
+              ),
               series: [
                 {
                   data: [
                     {
-                      name: 'Daily Reward',
-                      data: [100, 410, 350, 510, 490, 620, 690, 910, 148, 350, 510, 490],
+                      name: 'New Blocks',
+                      data: statistics!.statistics!.map((item) => item!.newBlocks),
+                    },
+                    {
+                      name: 'New Hash Power',
+                      data: statistics!.statistics!.map((item) => item!.newHashPower),
                     },
                   ],
                 },
               ],
+              options: {
+                plotOptions: {
+                  bar: {
+                    columnWidth: '16%',
+                  },
+                },
+              },
             }}
+            type="bar"
           />
         </Grid>
         <Grid xs={12} md={6}>
           <ChartWidget
-            title="Daily Reward(People)"
-            subheader="(+20%) than last day"
+            title="TXC Shared"
             chart={{
-              colors: ['#ffb136'],
-              categories: [
-                'Jack',
-                'Ross',
-                'James',
-                'Samantha',
-                'Lissa',
-                'Sharon',
-                'Karin',
-                'Tanner',
-                'Julie',
-                'Kylah',
-                'Randy',
-                'Leroy',
-              ],
+              categories: statistics?.statistics!.map(
+                (item) => new Date(item!.issuedAt).toISOString().split('T')[0]
+              ),
               series: [
                 {
                   data: [
                     {
                       name: 'Daily Reward',
-                      data: [100, 340, 130, 560, 770, 440, 990, 770, 450, 130, 560, 770],
+                      data: statistics!.statistics!.map((item) => item!.newBlocks * 254),
                     },
                   ],
                 },
