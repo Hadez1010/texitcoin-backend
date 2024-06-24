@@ -1,91 +1,121 @@
-import { useState, useEffect } from 'react';
+import { useMemo, useCallback } from 'react';
+import { useQuery as useGraphQuery } from '@apollo/client';
 
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import TableContainer from '@mui/material/TableContainer';
 
-import Iconify from 'src/components/iconify';
+import { useQuery } from 'src/routes/hooks';
+import type { SortOrder } from 'src/routes/hooks/useQuery';
+
 import Scrollbar from 'src/components/scrollbar';
-import {
-  useTable,
-  emptyRows,
-  getComparator,
-  TableEmptyRows,
-  TableHeadCustom,
-  TableSelectedAction,
-  TablePaginationCustom,
-} from 'src/components/Table';
+import { LoadingScreen } from 'src/components/loading-screen';
+import { TableHeadCustom, TablePaginationCustom } from 'src/components/Table';
+
+import { IStatisticsFilters, IStatisticsPrismaFilter } from 'src/types/statistics';
+
+import { FETCH_MEMBERSTATISTICS_QUERY } from './query';
+
+const defaultFilter: IStatisticsFilters = {
+  search: '',
+  newBlocks: 0,
+  totalBlocks: 0,
+  newHashPower: 0,
+  totalHashPower: 0,
+  members: 0,
+};
 
 // ----------------------------------------------------------------------
 
 type RowDataType = {
-  username: string;
-  productName: string;
-  date: string;
+  id: string;
   hashPower: number;
-  assetId: string;
+  percent: number;
+  txcShared: number;
+  issuedAt: string;
+  member: {
+    username: string;
+    txcCold: string;
+    assetId: string;
+  };
+  statistics: {
+    newBlocks: number;
+    newHashPower: number;
+    status: boolean;
+  };
 };
 
-function createData(
-  username: string,
-  productName: string,
-  date: string,
-  hashPower: number,
-  assetId: string
-) {
-  return { username, productName, date, hashPower, assetId };
-}
-
-const TABLE_DATA = [
-  createData('james', '(1) Share - 500mh/s Power', '2024-06-17', 670, 'vAiqGb'),
-  createData('lissa', 'Free Share - 500mh/s Power', '2024-06-16', 510, 'rAmptJ'),
-  createData('stepheb', 'Free Share - 500mh/s Power', '2024-06-15', 240, 'rQvSeV'),
-  createData('tanner', 'Free Share - 500mh/s Power', '2024-06-14', 240, 'dY4yAr'),
-  createData('kalistarner', 'Free Share - 500mh/s Power', '2024-06-13', 490, 'cmCy1H'),
-  createData('oscar', 'Free Share - 500mh/s Power', '2024-06-12', 870, 'syy8dc'),
-  createData('sharon', '(1) Share - 500mh/s Power', '2024-06-11', 370, 'ts7nB2'),
-  createData('julie', '(1) Share - 500mh/s Power', '2024-06-10', 940, 'bmR2hP'),
-  createData('kylah', '(1) Share - 500mh/s Power', '2024-06-09', 650, 'b5FoCU'),
-  createData('randy', '(1) Share - 500mh/s Power', '2024-06-08', 980, 'g5tcMaz'),
-  createData('leroy', '(1) Share - 500mh/s Power', '2024-06-07', 810, 'b7Y4WF'),
-  createData('czark', 'Free Share - 500mh/s Power', '2024-06-06', 900, 'peVuHF'),
-];
-
 const TABLE_HEAD = [
-  { id: 'username', label: 'Username', align: 'left' },
-  { id: 'productName', label: 'Product Name', align: 'left' },
-  { id: 'date', label: 'Date', align: 'left' },
+  { id: 'issuedAt', label: 'Date', align: 'left' },
   { id: 'hashPower', label: 'Hash Power', align: 'left' },
-  { id: 'assetId', label: 'AssetID', align: 'left' },
+  { id: 'percent', label: 'Percent', align: 'left' },
+  { id: 'txcShared', label: 'TXCShared', align: 'left' },
+  { id: 'username', label: 'Username', align: 'left' },
+  { id: 'txcCold', label: 'TXC-Cold', align: 'left' },
+  { id: 'assetId', label: 'AssetId', align: 'left' },
+  { id: 'newBlocks', label: 'New Blocks', align: 'left' },
+  { id: 'newHashPower', label: 'New Hash Power', align: 'left' },
+  { id: 'status', label: 'Status', align: 'left' },
 ];
+
+interface Props {
+  title: string;
+  changeStatus: Function;
+}
 
 // ----------------------------------------------------------------------
 
-export default function TxcTable() {
-  const table = useTable({
-    defaultOrderBy: 'calories',
-    defaultRowsPerPage: 10,
+export default function TxcTable({ title, changeStatus }: Props) {
+  const [query, setQuery] = useQuery<IStatisticsFilters>();
+
+  const { page = { page: 1, pageSize: 10 }, sort, filter = defaultFilter } = query;
+
+  const graphQueryFilter = useMemo(() => {
+    const filterObj: IStatisticsPrismaFilter = {};
+
+    if (filter.search) {
+      filterObj.OR = [{}];
+    }
+
+    filterObj.OR = [{ issuedAt: new Date(new Date().toISOString().split('T')[0]) }];
+
+    return filterObj;
+  }, [filter]);
+
+  const graphQuerySort = useMemo(() => {
+    if (!sort) return undefined;
+
+    return Object.entries(sort)
+      .map(([key, value]) => `${value === 'asc' ? '' : '-'}${key}`)
+      .join(',');
+  }, [sort]);
+
+  const { loading, data } = useGraphQuery(FETCH_MEMBERSTATISTICS_QUERY, {
+    variables: {
+      page: page && `${page.page},${page.pageSize}`,
+      filter: graphQueryFilter,
+      sort: graphQuerySort,
+    },
   });
 
-  const [tableData, setTableData] = useState<RowDataType[]>([]);
+  const tableData: RowDataType[] = loading
+    ? []
+    : (data!.memberStatistics!.memberStatistics!.filter(
+        (item: any) => item !== null
+      ) as RowDataType[]);
 
-  useEffect(() => {
-    setTableData(TABLE_DATA);
-  }, []);
-
-  const dataFiltered = applyFilter({
-    inputData: tableData,
-    comparator: getComparator(table.order, table.orderBy),
-  });
-
-  const denseHeight = table.dense ? 34 : 34 + 20;
+  const handlePageChange = useCallback(
+    (name: string, value: number) => {
+      setQuery({ ...query, page: { ...page, [name]: value } });
+    },
+    [setQuery, query, page]
+  );
 
   return (
     <>
@@ -95,112 +125,63 @@ export default function TxcTable() {
         justifyContent="space-between"
         sx={{ pl: 3, pr: 3, pt: 2, pb: 2 }}
       >
-        <Typography variant="subtitle1">Sales</Typography>
+        <Typography variant="subtitle1">{title}</Typography>
+        <ButtonGroup variant="contained" color="primary" onClick={() => changeStatus(true)}>
+          <Button>Confirm</Button>
+        </ButtonGroup>
       </Stack>
 
       <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
-        <TableSelectedAction
-          numSelected={table.selected.length}
-          rowCount={dataFiltered.length}
-          onSelectAllRows={(checked) =>
-            table.onSelectAllRows(
-              checked,
-              dataFiltered.map((row) => row.username)
-            )
-          }
-          action={
-            <Tooltip title="Delete">
-              <IconButton color="primary">
-                <Iconify icon="solar:trash-bin-trash-bold" />
-              </IconButton>
-            </Tooltip>
-          }
-        />
-
         <Scrollbar>
           <Table size="small" sx={{ minWidth: 800 }}>
             <TableHeadCustom
-              order={table.order}
-              orderBy={table.orderBy}
+              order={sort && sort[Object.keys(sort)[0]]}
+              orderBy={sort && Object.keys(sort)[0]}
               headLabel={TABLE_HEAD}
-              rowCount={dataFiltered.length}
-              numSelected={table.selected.length}
-              onSort={table.onSort}
-              onSelectAllRows={(checked) =>
-                table.onSelectAllRows(
-                  checked,
-                  dataFiltered.map((row) => row.username)
-                )
-              }
+              rowCount={loading ? 0 : tableData!.length}
+              onSort={(id) => {
+                const isAsc = sort && sort[id] === 'asc';
+                const newSort = { [id]: isAsc ? 'desc' : ('asc' as SortOrder) };
+                setQuery({ ...query, sort: newSort });
+              }}
             />
-
-            <TableBody>
-              {dataFiltered
-                .slice(
-                  table.page * table.rowsPerPage,
-                  table.page * table.rowsPerPage + table.rowsPerPage
-                )
-                .map((row) => (
-                  <TableRow
-                    hover
-                    key={row.username}
-                    onClick={() => table.onSelectRow(row.username)}
-                    selected={table.selected.includes(row.username)}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox checked={table.selected.includes(row.username)} />
-                    </TableCell>
-                    <TableCell> {row.username} </TableCell>
-                    <TableCell align="left">{row.productName}</TableCell>
-                    <TableCell align="left">{row.date}</TableCell>
+            {loading ? (
+              <LoadingScreen />
+            ) : (
+              <TableBody>
+                {tableData!.map((row) => (
+                  <TableRow hover key={row.id}>
+                    <TableCell> {new Date(row.issuedAt).toISOString().split('T')[0]} </TableCell>
                     <TableCell align="left">{row.hashPower}</TableCell>
-                    <TableCell align="left">{row.assetId}</TableCell>
+                    <TableCell align="left">{row.percent}</TableCell>
+                    <TableCell align="left">{row.txcShared}</TableCell>
+                    <TableCell align="left">{row.member?.username}</TableCell>
+                    <TableCell align="left">{row.member?.txcCold}</TableCell>
+                    <TableCell align="left">{row.member?.assetId}</TableCell>
+                    <TableCell align="left">{row.statistics?.newBlocks}</TableCell>
+                    <TableCell align="left">{row.statistics?.newHashPower}</TableCell>
+                    <TableCell align="left">
+                      {row.statistics?.status ? 'Confirmed' : 'Pending'}
+                    </TableCell>
                   </TableRow>
                 ))}
-
-              <TableEmptyRows
-                height={denseHeight}
-                emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
-              />
-            </TableBody>
+              </TableBody>
+            )}
           </Table>
         </Scrollbar>
       </TableContainer>
 
       <TablePaginationCustom
-        count={dataFiltered.length}
-        page={table.page}
-        rowsPerPage={table.rowsPerPage}
-        onPageChange={table.onChangePage}
-        onRowsPerPageChange={table.onChangeRowsPerPage}
-        //
-        // dense={table.dense}
-        // onChangeDense={table.onChangeDense}
+        count={loading ? 0 : data!.memberStatistics!.total!}
+        page={loading ? 0 : page!.page - 1}
+        rowsPerPage={page?.pageSize}
+        onPageChange={(_, curPage) => {
+          handlePageChange('page', curPage + 1);
+        }}
+        onRowsPerPageChange={(event) => {
+          handlePageChange('pageSize', parseInt(event.target.value, 10));
+        }}
       />
     </>
   );
-}
-
-// ----------------------------------------------------------------------
-
-function applyFilter({
-  inputData,
-  comparator,
-}: {
-  inputData: RowDataType[];
-  comparator: (a: any, b: any) => number;
-}) {
-  const stabilizedThis = inputData.map((el, index) => [el, index] as const);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-
-    if (order !== 0) return order;
-
-    return a[1] - b[1];
-  });
-
-  inputData = stabilizedThis.map((el) => el[0]);
-
-  return inputData;
 }
