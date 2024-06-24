@@ -1,13 +1,13 @@
 import { useMemo, useCallback } from 'react';
 import { useQuery as useGraphQuery } from '@apollo/client';
 
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+// import Tab from '@mui/material/Tab';
+// import Tabs from '@mui/material/Tabs';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import { alpha } from '@mui/material/styles';
+// import { alpha } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
@@ -26,7 +26,7 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import SearchInput from 'src/components/SearchInput';
 import BreadCrumbs from 'src/components/Breadcrumbs';
-import Label, { LabelColor } from 'src/components/label';
+// import Label, { LabelColor } from 'src/components/label';
 import { useSettingsContext } from 'src/components/settings';
 import { LoadingScreen } from 'src/components/loading-screen';
 import {
@@ -37,17 +37,17 @@ import {
   TablePaginationCustom,
 } from 'src/components/Table';
 
-import { UserRole, IUserPrismaFilter, IUserTableFilters } from 'src/types/user';
+import { IUserPrismaFilter, IUserTableFilters } from 'src/types/user';
 
 import UserTableRow from './UserTableRow';
 import UserTableFiltersResult from './UserTableFiltersResult';
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS: { value: UserRole; label: string; color: LabelColor }[] = [
-  { value: 'all', label: 'All', color: 'info' },
-  { value: 'admin', label: 'Admin', color: 'success' },
-];
+// const STATUS_OPTIONS: { value: UserRole; label: string; color: LabelColor }[] = [
+//   { value: 'all', label: 'All', color: 'info' },
+//   { value: 'admin', label: 'Admin', color: 'success' },
+// ];
 
 const TABLE_HEAD = [
   { id: 'username', label: 'Username', sortable: true },
@@ -66,19 +66,19 @@ const defaultFilter: IUserTableFilters = {
 
 // ----------------------------------------------------------------------
 
-const FETCH_USER_STATS_QUERY = gql(/* GraphQL */ `
-  query FetchUserStats($adminFilter: JSONObject) {
-    all: users {
-      total
-    }
-    admin: users(filter: $adminFilter) {
-      total
-    }
-  }
-`);
+// const FETCH_USER_STATS_QUERY = gql(/* GraphQL */ `
+//   query FetchUserStats($adminFilter: JSONObject) {
+//     all: users {
+//       total
+//     }
+//     admin: users(filter: $adminFilter) {
+//       total
+//     }
+//   }
+// `);
 
 const FETCH_USERS_QUERY = gql(/* GraphQL */ `
-  query FetchUsers($page: String, $filter: JSONObject, $sort: String) {
+  query Users($page: String, $filter: JSONObject, $sort: String) {
     users(page: $page, filter: $filter, sort: $sort) {
       users {
         id
@@ -109,7 +109,7 @@ export default function UserListView() {
     const filterObj: IUserPrismaFilter = {};
     if (filter.search) {
       filterObj.OR = [
-        { name: { contains: filter.search } },
+        { username: { contains: filter.search } },
         { email: { contains: filter.search } },
       ];
     }
@@ -133,9 +133,9 @@ export default function UserListView() {
 
   const canReset = !!filter.search;
 
-  const { data: statsData } = useGraphQuery(FETCH_USER_STATS_QUERY, {
-    variables: { adminFilter: { isAdmin: true } },
-  });
+  // const { data: statsData } = useGraphQuery(FETCH_USER_STATS_QUERY, {
+  //   variables: { adminFilter: { isAdmin: true } },
+  // });
 
   const { loading, data } = useGraphQuery(FETCH_USERS_QUERY, {
     variables: {
@@ -148,13 +148,13 @@ export default function UserListView() {
 
   const notFound = (canReset && !tableData?.users?.length) || !tableData?.users?.length;
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: UserRole) => {
-    setQuery({
-      ...query,
-      filter: { ...filter, status: newValue },
-      page: { page: 1, pageSize: query.page?.pageSize ?? 10 },
-    });
-  };
+  // const handleTabChange = (event: React.SyntheticEvent, newValue: UserRole) => {
+  //   setQuery({
+  //     ...query,
+  //     filter: { ...filter, status: newValue },
+  //     page: { page: 1, pageSize: query.page?.pageSize ?? 10 },
+  //   });
+  // };
 
   const handleSearchChange = useCallback(
     (value: string) => {
@@ -170,6 +170,8 @@ export default function UserListView() {
     },
     [setQuery, query, page]
   );
+
+  console.log('users => ', tableData);
 
   return (
     <>
@@ -193,7 +195,7 @@ export default function UserListView() {
         />
 
         <Card>
-          <Tabs
+          {/* <Tabs
             value={filter.status}
             onChange={handleTabChange}
             sx={{
@@ -217,7 +219,7 @@ export default function UserListView() {
                 }
               />
             ))}
-          </Tabs>
+          </Tabs> */}
 
           <SearchInput search={filter.search} onSearchChange={handleSearchChange} />
 
