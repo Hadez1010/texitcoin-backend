@@ -14,9 +14,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query FetchMe {\n    me {\n      id\n      username\n      email\n    }\n  }\n": types.FetchMeDocument,
-    "\n  mutation ConfirmStatistics($data: ConfirmStatistics!) {\n    confirmStatistics(data: $data) {\n      results {\n        txcCold\n        txcShared\n      }\n    }\n  }\n": types.ConfirmStatisticsDocument,
+    "\n  mutation ConfirmStatistics($data: ConfirmStatistics!) {\n    confirmStatistics(data: $data) {\n      success\n    }\n  }\n": types.ConfirmStatisticsDocument,
     "\n  query MemberStatistics($page: String, $filter: JSONObject, $sort: String) {\n    memberStatistics(page: $page, filter: $filter, sort: $sort) {\n      memberStatistics {\n        id\n        hashPower\n        txcShared\n        issuedAt\n        percent\n        createdAt\n        updatedAt\n        deletedAt\n        member {\n          username\n          txcCold\n          email\n          assetId\n        }\n        statistics {\n          newBlocks\n          newHashPower\n          status\n        }\n      }\n      total\n    }\n  }\n": types.MemberStatisticsDocument,
     "\n  query Blocks($page: String, $filter: JSONObject, $sort: String) {\n    blocks(page: $page, filter: $filter, sort: $sort) {\n      blocks {\n        id\n        blockNo\n        hashRate\n        difficulty\n        createdAt\n        updatedAt\n        deletedAt\n      }\n      total\n    }\n  }\n": types.BlocksDocument,
+    "\n  query PendingStatistics($page: String, $filter: JSONObject, $sort: String) {\n    pendingStatistics(page: $page, filter: $filter, sort: $sort) {\n      results {\n        txcCold\n        txcShared\n      }\n    }\n  }\n": types.PendingStatisticsDocument,
     "\n  query Statistics($page: String, $filter: JSONObject, $sort: String) {\n    statistics(page: $page, filter: $filter, sort: $sort) {\n      statistics {\n        id\n        newHashPower\n        totalHashPower\n        newBlocks\n        totalBlocks\n        members\n        issuedAt\n        from\n        to\n        status\n        createdAt\n        updatedAt\n        deletedAt\n        memberStatistics {\n          id\n          hashPower\n          txcShared\n          issuedAt\n          percent\n          createdAt\n          updatedAt\n          deletedAt\n          member {\n            id\n            username\n            txcCold\n            email\n            mobile\n          }\n        }\n      }\n      total\n    }\n  }\n": types.StatisticsDocument,
     "\n  mutation Login($data: LoginInput!) {\n    login(data: $data) {\n      accessToken\n    }\n  }\n": types.LoginDocument,
     "\n  query Members($page: String, $filter: JSONObject, $sort: String) {\n    members(page: $page, filter: $filter, sort: $sort) {\n      total\n    }\n  }\n": types.MembersDocument,
@@ -48,7 +49,7 @@ export function gql(source: "\n  query FetchMe {\n    me {\n      id\n      user
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation ConfirmStatistics($data: ConfirmStatistics!) {\n    confirmStatistics(data: $data) {\n      results {\n        txcCold\n        txcShared\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation ConfirmStatistics($data: ConfirmStatistics!) {\n    confirmStatistics(data: $data) {\n      results {\n        txcCold\n        txcShared\n      }\n    }\n  }\n"];
+export function gql(source: "\n  mutation ConfirmStatistics($data: ConfirmStatistics!) {\n    confirmStatistics(data: $data) {\n      success\n    }\n  }\n"): (typeof documents)["\n  mutation ConfirmStatistics($data: ConfirmStatistics!) {\n    confirmStatistics(data: $data) {\n      success\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -57,6 +58,10 @@ export function gql(source: "\n  query MemberStatistics($page: String, $filter: 
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query Blocks($page: String, $filter: JSONObject, $sort: String) {\n    blocks(page: $page, filter: $filter, sort: $sort) {\n      blocks {\n        id\n        blockNo\n        hashRate\n        difficulty\n        createdAt\n        updatedAt\n        deletedAt\n      }\n      total\n    }\n  }\n"): (typeof documents)["\n  query Blocks($page: String, $filter: JSONObject, $sort: String) {\n    blocks(page: $page, filter: $filter, sort: $sort) {\n      blocks {\n        id\n        blockNo\n        hashRate\n        difficulty\n        createdAt\n        updatedAt\n        deletedAt\n      }\n      total\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query PendingStatistics($page: String, $filter: JSONObject, $sort: String) {\n    pendingStatistics(page: $page, filter: $filter, sort: $sort) {\n      results {\n        txcCold\n        txcShared\n      }\n    }\n  }\n"): (typeof documents)["\n  query PendingStatistics($page: String, $filter: JSONObject, $sort: String) {\n    pendingStatistics(page: $page, filter: $filter, sort: $sort) {\n      results {\n        txcCold\n        txcShared\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

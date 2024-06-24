@@ -17,7 +17,11 @@ import ComponentBlock from 'src/components/Component-Block';
 import { IStatisticsFilters, IStatisticsPrismaFilter } from 'src/types/statistics';
 
 import Table from './table';
-import { FETCH_BLOCKS_QUERY, CONFIRM_STATISTICS_MUTATION } from './query';
+import {
+  FETCH_BLOCKS_QUERY,
+  FETCH_PENDING_STATISTICS_QUERY,
+  CONFIRM_STATISTICS_MUTATION,
+} from './query';
 
 const defaultFilter = {
   search: '',
@@ -27,19 +31,12 @@ export default function Preview() {
   const today = new Date();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [sendmany, setSendmany] = useState<string[]>([]);
 
   const [query] = useQuery<IStatisticsFilters>();
 
   const { filter = defaultFilter } = query;
 
-  const changeStatus = (status: boolean) => {
-    if (status) {
-      handleSubmit();
-    }
-
-    setIsOpen(status);
-  };
+  const changeStatus = (status: boolean) => setIsOpen(status);
 
   const graphQueryFilter = useMemo(() => {
     const filterObj: IStatisticsPrismaFilter = {};
@@ -59,24 +56,33 @@ export default function Preview() {
     },
   });
 
+  const { loading: confirmLoading, data: pendingData } = useGraphQuery(
+    FETCH_PENDING_STATISTICS_QUERY
+  );
+
   const [getResults] = useMutation(CONFIRM_STATISTICS_MUTATION);
 
   const handleSubmit = async () => {
     try {
+      changeStatus(false);
       const response = await getResults({
         variables: { data: { status: true } },
       });
 
-      const result = response!.data!.confirmStatistics!.results;
-
-      const initial = ['sendmany "" "{'];
-      const data = result!.map((item) => `\\"${item.txcCold}\\": ${item.txcShared},`);
-
-      setSendmany([...initial, ...data]);
+      console.log('success => ', response);
     } catch (error) {
       console.log('error => ', error);
     }
   };
+
+  const initial = ['sendmany "" "{'];
+  const pending = confirmLoading
+    ? []
+    : pendingData!.pendingStatistics!.results!.map(
+        (item) => `\\"${item.txcCold}\\": ${item.txcShared},`
+      );
+
+  const sendmany = [...initial, ...pending];
 
   const blocks = blockLoading ? { blocks: [], total: 0 } : blocksData?.blocks;
 
@@ -130,7 +136,7 @@ export default function Preview() {
         </Grid>
       </Grid>
       <Grid container spacing={3} sx={{ pl: 1 }}>
-        <Grid xs={4} md={2}>
+        <Grid xs={4} md={2} mdOffset={6}>
           <Typography variant="subtitle2">TXC Shared: </Typography>
         </Grid>
         <Grid xs={8} md={4}>
@@ -163,7 +169,7 @@ export default function Preview() {
           </Paper>
           <Paper sx={{ p: 2, display: 'flex', justifyContent: 'right' }}>
             <ButtonGroup variant="contained" color="primary">
-              <Button onClick={() => changeStatus(false)}>Send</Button>
+              <Button onClick={handleSubmit}>Send</Button>
             </ButtonGroup>
           </Paper>
         </Drawer>

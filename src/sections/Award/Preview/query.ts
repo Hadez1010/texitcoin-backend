@@ -3,10 +3,7 @@ import { gql } from 'src/__generated__';
 export const CONFIRM_STATISTICS_MUTATION = gql(/* GraphQL */ `
   mutation ConfirmStatistics($data: ConfirmStatistics!) {
     confirmStatistics(data: $data) {
-      results {
-        txcCold
-        txcShared
-      }
+      success
     }
   }
 `);
@@ -53,6 +50,17 @@ export const FETCH_BLOCKS_QUERY = gql(/* GraphQL */ `
         deletedAt
       }
       total
+    }
+  }
+`);
+
+export const FETCH_PENDING_STATISTICS_QUERY = gql(/* GraphQL */ `
+  query PendingStatistics($page: String, $filter: JSONObject, $sort: String) {
+    pendingStatistics(page: $page, filter: $filter, sort: $sort) {
+      results {
+        txcCold
+        txcShared
+      }
     }
   }
 `);
