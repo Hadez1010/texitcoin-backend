@@ -77,30 +77,30 @@ export const FETCH_MEMBERS_BY_DATE = gql(/* GraphQL */ `
   }
 `);
 
-export const FETCH_MEMBERSTATISTICS_QUERY = gql(/* GraphQL */ `
-  query MemberStatistics($page: String, $filter: JSONObject, $sort: String) {
-    memberStatistics(page: $page, filter: $filter, sort: $sort) {
-      memberStatistics {
-        id
-        hashPower
-        txcShared
-        issuedAt
-        percent
-        createdAt
-        updatedAt
-        deletedAt
-        member {
-          id
-          username
-          txcCold
-          email
-          mobile
-          createdAt
-          updatedAt
-          deletedAt
-        }
-      }
-      total
-    }
-  }
-`);
+// export const FETCH_MEMBERSTATISTICS_QUERY = gql(/* GraphQL */ `
+//   query MemberStatistics($page: String, $filter: JSONObject, $sort: String) {
+//     memberStatistics(page: $page, filter: $filter, sort: $sort) {
+//       memberStatistics {
+//         id
+//         hashPower
+//         txcShared
+//         issuedAt
+//         percent
+//         createdAt
+//         updatedAt
+//         deletedAt
+//         member {
+//           id
+//           username
+//           txcCold
+//           email
+//           mobile
+//           createdAt
+//           updatedAt
+//           deletedAt
+//         }
+//       }
+//       total
+//     }
+//   }
+// `);
